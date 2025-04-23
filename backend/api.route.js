@@ -45,6 +45,25 @@ router.get("/listing/:id", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch listing", details: error.message });
     }
 });
+router.get("/listing/:id/edit", async (req, res) => {
+    const { id } = req.params; 
+    const listing = req.body; // Ensure id is correctly extracted as a string
+    console.log("Request ID:", id);
+
+    try {
+        const results = await listing.findById(id);  // No need to convert manually
+        console.log(results);
+
+        if (!results) {
+            return res.status(404).json({ error: "Listing not found" });
+        }
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error("Error fetching listing:", error);
+        res.status(500).json({ error: "Failed to fetch listing", details: error.message });
+    }
+});
 
 
 module.exports = router;
